@@ -54,6 +54,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Monoton-Regular.ttf</string>
+		<string>OtomanopeeOne-Regular.ttf</string>
 	</array>
 </dict>
 </plist>

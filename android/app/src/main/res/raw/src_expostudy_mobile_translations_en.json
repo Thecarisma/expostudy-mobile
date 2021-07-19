@@ -1,0 +1,24 @@
+
+{
+    "basic": {
+        "login": "Login",
+        "register": "Register"
+    },
+    "slides": [
+        {
+            "img_src": "https://www.nicepng.com/png/full/365-3650785_man-cheerful-3d-white-people-png.png",
+            "title": "Connect with like minds.",
+            "desc": "There are various minds in this world, some are nefarious some are malicious but in this app you will meet all kind of minds in your field of study whether whichcraft or sorcery or patoral. On side note I have no idea what nefarious meant if it even a word."
+        },
+        {
+            "img_src": "http://clipart-library.com/images_k/books-transparent-png/books-transparent-png-24.png",
+            "title": "Share study materials",
+            "desc": "Now you can share stuffs, what it is it does not matter, study material? expo, book, links image, video and even if you can send yourself it entirely your life problem."
+        },
+        {
+            "img_src": "https://www.pinclipart.com/picdir/big/29-296318_environment-clipart-ict-virtual-classroom-logo-png-transparent.png",
+            "title": "Host and Join classes from anywhere",
+            "desc": "Want to host a class, lesson remotely, Use the mobile app to join a class room, and the desktop app to create a class keep record of the class material chats, report e.t.c"
+        }
+    ]
+}

@@ -10,6 +10,7 @@ import React from 'react';
 import type { Node } from 'react';
 import 'react-native-gesture-handler';
 import Splash from "./components/Splash";
+import Landing from "./components/landing/Landing";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -19,6 +20,7 @@ const App: () => Node = () => {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Splash" component={Splash}  options={{ headerShown: false }}/>
+            <Stack.Screen name="Landing" component={Landing}  options={{ headerShown: false }}/>
           </Stack.Navigator>
         </NavigationContainer>
     )
