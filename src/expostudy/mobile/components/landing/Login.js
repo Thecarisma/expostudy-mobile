@@ -27,9 +27,9 @@ const Login = (props) => {
                 <Text style={[landingPageStyle.viewTitleText, colors.white]}>{projectTexts.landing_page.login.title}</Text>
                 <Text style={[landingPageStyle.viewTitleDesc, colors.white]}>{projectTexts.landing_page.login.desc}</Text>
                 <View>
-                <TextInput style={commonStyles.textInput}
-                    onChangeText={onChangeEmail}
-                    value={email} />
+					<TextInput style={commonStyles.textInput}
+						onChangeText={onChangeEmail}
+						value={email} />
                 </View>
             </ScrollView>
             <View style={landingPageStyle.bottomPanelView}>
