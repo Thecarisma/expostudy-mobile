@@ -9,40 +9,24 @@ import { AppName, projectTexts, buildSlider } from "../../variables";
 import { colors, margins, layouts, backgroundColors, borderRadiuses, landingPageStyle } from "../../../../../assets/css/styles.css"
 import { BackHandler, StatusBar, SafeAreaView, ScrollView, View, Image, Text, TouchableOpacity, useColorScheme } from 'react-native';
 
-const buildSliderView = (imageSrc, title, desc) => {
-    return (<View style={layouts.centerChildren, layouts.justifyContentCenter}>
-        <Image 
-            source={{uri: imageSrc}}
-            resizeMode={"center"}
-            style={[landingPageStyle.slideImage]} />
-        <View>
-            <Text style={landingPageStyle.slideTitle}>{title}</Text>
-            <Text style={landingPageStyle.slideDesc}>{desc}</Text>
-        </View>
-    </View>)
-}
-
-const SliderViews = [
-    buildSliderView(projectTexts.slides[0].img_src, projectTexts.slides[0].title, projectTexts.slides[0].desc),
-    buildSliderView(projectTexts.slides[2].img_src, projectTexts.slides[2].title, projectTexts.slides[2].desc),
-    buildSliderView(projectTexts.slides[1].img_src, projectTexts.slides[1].title, projectTexts.slides[1].desc)
-]
-
 const LandingView = (props) => {
-    let sliderInterval;
-    const [slideView, setSlideView] = React.useState(SliderViews[0]);
     const cleanup = () => {
-        clearInterval(sliderInterval);
+		if (props.cleanup) props.cleanup();
     }
-
-    React.useEffect(() => {
-        sliderInterval = buildSlider(5, SliderViews, setSlideView);
-    }, []);
 
     return (
         <SafeAreaView style={landingPageStyle.container}>
             <ScrollView style={[landingPageStyle.topPanelView, margins.marginTop30]}>
-                {slideView}
+				<View style={layouts.centerChildren, layouts.justifyContentCenter}>
+					<Image 
+						source={{uri: props.currentSlide.img_src}}
+						resizeMode={"center"}
+						style={[landingPageStyle.slideImage]} />
+					<View>
+						<Text style={landingPageStyle.slideTitle}>{props.currentSlide.title}</Text>
+						<Text style={landingPageStyle.slideDesc}>{props.currentSlide.desc}</Text>
+					</View>
+				</View>
             </ScrollView>
             <View style={landingPageStyle.bottomPanelView}>
                 <TouchableOpacity style={[landingPageStyle.bottomPanelButton, layouts.zIndex99]} 
@@ -63,15 +47,23 @@ const LandingView = (props) => {
     )
 }
 
+function buildLandingPage(navigation, forwardRef, slide, isDarkMode, cleanup) {
+	return LandingView({navigation, forwardRef, cleanup, currentSlide: slide, pageColorSchemeStyle: (isDarkMode ? "landingPageDarkScheme" : "landingPageLightScheme")});
+}
+
 const Landing: () => Node = ({ navigation }) => {
     const isDarkMode = useColorScheme() === 'dark';
     const forwardRef = {};
-    const isOnLandingPage = React.useRef(true);
-    const landingView = LandingView({navigation, forwardRef, pageColorSchemeStyle: (isDarkMode ? "landingPageDarkScheme" : "landingPageLightScheme")});
-    const loginView = Login({navigation, forwardRef});
-    const [currentLandingView, setCurrentLandingView] = React.useState(loginView);
+    let sliderInterval;
     const cleanup = () => {
+        clearInterval(sliderInterval);
+		console.log("CLEANING UP");
     }
+    const isOnLandingPage = React.useRef(true);
+    const [currentSlide, setCurrentSlide] = React.useState(projectTexts.slides[0]);
+    const landingView = buildLandingPage(navigation, forwardRef, projectTexts.slides[0], isDarkMode, cleanup);
+    const loginView = Login({navigation, forwardRef});
+    const [currentLandingView, setCurrentLandingView] = React.useState(landingView);
     const goBack = () => {
         if (!isOnLandingPage.current) {
             setCurrentLandingView(landingView);
@@ -83,6 +75,10 @@ const Landing: () => Node = ({ navigation }) => {
     }
     
     React.useEffect(() => {
+		sliderInterval = buildSlider(5, projectTexts.slides, (slide) => {
+			console.log("Current Slide: ", slide)
+			setCurrentLandingView(buildLandingPage(navigation, forwardRef, slide, isDarkMode, cleanup));
+		});
         forwardRef.isOnLandingPage = isOnLandingPage;
         forwardRef.landingView = landingView;
         forwardRef.loginView = loginView;
@@ -90,6 +86,7 @@ const Landing: () => Node = ({ navigation }) => {
         StatusBar.setHidden(true);
         BackHandler.addEventListener('hardwareBackPress', goBack);
         return () => {
+			console.log("BACK TO SLIDER PAGE");
             BackHandler.removeEventListener('hardwareBackPress', goBack);
         };
     }, []);
